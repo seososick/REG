@@ -6,7 +6,16 @@ import { generateHomePage, generateAboutPage, generateContactPage, rewriteNews }
 import { Building2, Sparkles } from 'lucide-react';
 
 const App: React.FC = () => {
-  const [apiKey, setApiKey] = useState(process.env.API_KEY || '');
+  // Safe access to process.env to prevent "process is not defined" crashes in browser environments
+  const getInitialApiKey = () => {
+    try {
+      return process.env.API_KEY || '';
+    } catch (e) {
+      return '';
+    }
+  };
+
+  const [apiKey, setApiKey] = useState(getInitialApiKey());
   const [url, setUrl] = useState('');
   const [province, setProvince] = useState('');
   const [newsItems, setNewsItems] = useState<NewsInput[]>([{ id: 1, content: '' }, { id: 2, content: '' }, { id: 3, content: '' }]);
